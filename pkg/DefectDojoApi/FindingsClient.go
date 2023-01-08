@@ -6,19 +6,6 @@ import (
 	"github.com/jamuriano/go-defectdojo/pkg/Client"
 )
 
-const (
-	SeverityCritical               = "Critical"
-	SeverityHigh                   = "High"
-	SeverityMedium                 = "Medium"
-	SeverityLog                    = "Low"
-	SeverityInformational          = "Informational"
-	NumericalSeverityCritical      = "S0"
-	NumericalSeverityHigh          = "S1"
-	NumericalSeverityMedium        = "S2"
-	NumericalSeverityLow           = "S3"
-	NumericalSeverityInformational = "S4"
-)
-
 type FindingsClient struct {
 	client Client.Client
 }
