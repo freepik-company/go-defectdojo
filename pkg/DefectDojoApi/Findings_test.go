@@ -2,13 +2,12 @@ package DefectDojoApi
 
 import (
 	"fmt"
-	"github.com/jamuriano/go-defectdojo/pkg/Client"
-	"os"
+	"github.com/jamuriano/go-defectdojo/DefectDojo"
 	"testing"
 )
 
 func Test_FindingsClient_All(t *testing.T) {
-	sut := NewFindings(createClient())
+	sut := NewFindings(DefectDojo.CreateClient())
 	result := sut.All()
 
 	for _, finding := range result.Results {
@@ -17,7 +16,7 @@ func Test_FindingsClient_All(t *testing.T) {
 }
 
 func Test_FindingsClient_Create(t *testing.T) {
-	sut := NewFindings(createClient())
+	sut := NewFindings(DefectDojo.CreateClient())
 
 	finding := NewFinding(
 		"Create via API",
@@ -29,22 +28,14 @@ func Test_FindingsClient_Create(t *testing.T) {
 		47,
 		[]int{8},
 	)
-	
+
 	result := sut.Create(*finding)
 
 	fmt.Println(result)
 }
 
-func createClient() Client.Client {
-	client := Client.NewClient(
-		os.Getenv("TEST_DEFECTDOJO_HOST"),
-		os.Getenv("TEST_DEFECTDOJO_TOKEN"),
-	)
-	return client
-}
-
 func TestFindingsClient_Get(t *testing.T) {
-	client := createClient()
+	client := DefectDojo.CreateClient()
 	sut := NewFindings(client)
 
 	result := sut.Get(63)

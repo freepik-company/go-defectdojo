@@ -27,40 +27,37 @@ func NewFindings(client Client.Client) *FindingsClient {
 	return &FindingsClient{client: client}
 }
 
-func (fc FindingsClient) All() FindingResults {
-	response := fc.client.Get("/api/v2/findings/")
-	result := FindingResults{}
+func (this FindingsClient) All() *FindingResults {
+	response := this.client.Get("/api/v2/findings/")
+	result := new(FindingResults)
 	_ = json.Unmarshal([]byte(response), &result)
 
 	return result
 }
 
-func (fc FindingsClient) Create(finding Finding) Finding {
+func (this FindingsClient) Create(finding Finding) *Finding {
 	body, _ := json.Marshal(finding)
-	response := fc.client.Post("/api/v2/findings/", string(body))
+	response := this.client.Post("/api/v2/findings/", string(body))
 
-	result := Finding{}
+	return this.unmarshalFinding(response)
+}
+
+func (this FindingsClient) Get(id int) *Finding {
+	response := this.client.Get(fmt.Sprintf("/api/v2/findings/%d/", id))
+
+	return this.unmarshalFinding(response)
+}
+
+func (this FindingsClient) unmarshalFinding(response string) *Finding {
+	result := new(Finding)
 	_ = json.Unmarshal([]byte(response), &result)
 
 	return result
 }
 
-func (fc FindingsClient) Get(id int) Finding {
-	response := fc.client.Get(fmt.Sprintf("/api/v2/findings/%d/", id))
-
-	return fc.unmarshalFinding(response)
-}
-
-func (fc FindingsClient) unmarshalFinding(response string) Finding {
-	result := Finding{}
-	_ = json.Unmarshal([]byte(response), &result)
-
-	return result
-}
-
-func (fc FindingsClient) Update(finding Finding) Finding {
+func (this FindingsClient) Update(finding Finding) *Finding {
 	body, _ := json.Marshal(finding)
-	response := fc.client.Put(fmt.Sprintf("/api/v2/findings/%d/", finding.Id), string(body))
+	response := this.client.Put(fmt.Sprintf("/api/v2/findings/%d/", finding.Id), string(body))
 
-	return fc.unmarshalFinding(response)
+	return this.unmarshalFinding(response)
 }
