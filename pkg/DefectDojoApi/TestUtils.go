@@ -1,4 +1,4 @@
-package DefectDojo
+package DefectDojoApi
 
 import (
 	"github.com/freepik-company/go-defectdojo/pkg/Client"
