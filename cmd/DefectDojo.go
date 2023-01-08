@@ -1,23 +1,40 @@
 package cmd
 
 import (
-	"github.com/jamuriano/go-defectdojo/pkg/Client"
-	"github.com/jamuriano/go-defectdojo/pkg/DefectDojoApi"
+	"github.com/freepik-company/go-defectdojo/pkg/Client"
+	"github.com/freepik-company/go-defectdojo/pkg/DefectDojoApi"
 )
 
 type DefectDojo struct {
-	client   Client.Client
-	findings *DefectDojoApi.FindingsClient
-	tests    *DefectDojoApi.TestsClient
+	client      Client.Client
+	engagements *DefectDojoApi.EngagementsClient
+	findings    *DefectDojoApi.FindingsClient
+	tests       *DefectDojoApi.TestsClient
 }
 
 func NewDefectDojo(client Client.Client) *DefectDojo {
 	return &DefectDojo{client: client}
 }
 
-func (dojo DefectDojo) Findings() *DefectDojoApi.FindingsClient {
-	if dojo.findings == nil {
-		dojo.findings = DefectDojoApi.NewFindings(dojo.client)
+func (this DefectDojo) Engagement() *DefectDojoApi.EngagementsClient {
+	if this.engagements == nil {
+		this.engagements = DefectDojoApi.NewEngagementsClient(this.client)
 	}
-	return dojo.findings
+
+	return this.engagements
+}
+
+func (this DefectDojo) Findings() *DefectDojoApi.FindingsClient {
+	if this.findings == nil {
+		this.findings = DefectDojoApi.NewFindingsClient(this.client)
+	}
+	return this.findings
+}
+
+func (this DefectDojo) Tests() *DefectDojoApi.TestsClient {
+	if this.tests == nil {
+		this.tests = DefectDojoApi.NewTestsClient(this.client)
+	}
+
+	return this.tests
 }

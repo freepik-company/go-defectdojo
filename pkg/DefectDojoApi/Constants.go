@@ -16,3 +16,10 @@ const (
 	NumericalSeverityLow           = "S3"
 	NumericalSeverityInformational = "S4"
 )
+
+type EngagementResult struct {
+	Count    int          `json:"count"`
+	Next     string       `json:"next"`
+	Previous string       `json:"previous"`
+	Results  []Engagement `json:"results"`
+}

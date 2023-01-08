@@ -1,7 +1,7 @@
 package DefectDojo
 
 import (
-	"github.com/jamuriano/go-defectdojo/pkg/Client"
+	"github.com/freepik-company/go-defectdojo/pkg/Client"
 	"os"
 )
 

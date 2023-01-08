@@ -26,18 +26,18 @@ func NewClient(serverUrl string, apiToken string) Client {
 	}
 }
 
-func (c Client) EnableDebug() {
-	c.debug = true
+func (this Client) EnableDebug() {
+	this.debug = true
 }
 
-func (c *Client) Get(path string) string {
-	request := c.getRequest(path)
-	return c.doRequest(request)
+func (this *Client) Get(path string) string {
+	request := this.getRequest(path)
+	return this.doRequest(request)
 }
 
-func (c *Client) doRequest(request *http.Request) string {
+func (this *Client) doRequest(request *http.Request) string {
 
-	if c.debug {
+	if this.debug {
 		reqDump, err := httputil.DumpRequestOut(request, true)
 		if err != nil {
 			log.Fatal(err)
@@ -46,14 +46,14 @@ func (c *Client) doRequest(request *http.Request) string {
 		fmt.Println(string(reqDump))
 	}
 
-	response, err := c.httpClient.Do(request)
+	response, err := this.httpClient.Do(request)
 	defer response.Body.Close()
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	if c.debug {
+	if this.debug {
 		respDump, err := httputil.DumpResponse(response, true)
 		if err != nil {
 			log.Fatal(err)
@@ -75,46 +75,51 @@ func (c *Client) doRequest(request *http.Request) string {
 	return string(body)
 }
 
-func (c Client) getRequest(path string) *http.Request {
-	return c.createRequest(path, http.MethodGet, "")
+func (this Client) getRequest(path string) *http.Request {
+	return this.createRequest(path, http.MethodGet, "")
 }
 
-func (c Client) createRequest(path string, method string, body string) *http.Request {
-	request, err := http.NewRequest(method, c.getUrl(path), bytes.NewBuffer([]byte(body)))
+func (this Client) createRequest(path string, method string, body string) *http.Request {
+	request, err := http.NewRequest(method, this.getUrl(path), bytes.NewBuffer([]byte(body)))
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	request.Header.Add("Authorization", fmt.Sprintf("Token %s", c.apiToken))
+	request.Header.Add("Authorization", fmt.Sprintf("Token %s", this.apiToken))
 	request.Header.Add("accept", "application/json")
 
 	return request
 }
 
-func (c Client) getUrl(path string) string {
-	return strings.TrimRight(c.serverUrl, "/") + "/" + strings.TrimLeft(path, "/")
+func (this Client) getUrl(path string) string {
+	return strings.TrimRight(this.serverUrl, "/") + "/" + strings.TrimLeft(path, "/")
 }
 
-func (c *Client) Post(path string, body string) string {
-	request := c.postRequest(path, body)
-	return c.doRequest(request)
+func (this *Client) Post(path string, body string) string {
+	request := this.postRequest(path, body)
+	return this.doRequest(request)
 }
 
-func (c *Client) postRequest(path string, body string) *http.Request {
-	request := c.createRequest(path, http.MethodPost, body)
+func (this *Client) postRequest(path string, body string) *http.Request {
+	request := this.createRequest(path, http.MethodPost, body)
 	request.Header.Add("Content-Type", "*/*; charset=UTF-8")
 	return request
 }
 
-func (c *Client) Put(path string, body string) string {
-	request := c.putRequest(path, body)
-	return c.doRequest(request)
+func (this *Client) Put(path string, body string) string {
+	request := this.putRequest(path, body)
+	return this.doRequest(request)
 }
 
-func (c *Client) putRequest(path string, body string) *http.Request {
-	request := c.createRequest(path, http.MethodPut, body)
+func (this *Client) putRequest(path string, body string) *http.Request {
+	request := this.createRequest(path, http.MethodPut, body)
 	request.Header.Add("Content-Type", "*/*; charset=UTF-8")
 
 	return request
+}
+
+func (this Client) Delete(path string) string {
+	request := this.createRequest(path, http.MethodDelete, "")
+	return this.doRequest(request)
 }

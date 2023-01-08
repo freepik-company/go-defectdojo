@@ -2,12 +2,12 @@ package DefectDojoApi
 
 import (
 	"fmt"
-	"github.com/jamuriano/go-defectdojo/DefectDojo"
+	"github.com/freepik-company/go-defectdojo/DefectDojo"
 	"testing"
 )
 
 func Test_FindingsClient_All(t *testing.T) {
-	sut := NewFindings(DefectDojo.CreateClient())
+	sut := NewFindingsClient(DefectDojo.CreateClient())
 	result := sut.All()
 
 	for _, finding := range result.Results {
@@ -16,7 +16,7 @@ func Test_FindingsClient_All(t *testing.T) {
 }
 
 func Test_FindingsClient_Create(t *testing.T) {
-	sut := NewFindings(DefectDojo.CreateClient())
+	sut := NewFindingsClient(DefectDojo.CreateClient())
 
 	finding := NewFinding(
 		"Create via API",
@@ -36,7 +36,7 @@ func Test_FindingsClient_Create(t *testing.T) {
 
 func TestFindingsClient_Get(t *testing.T) {
 	client := DefectDojo.CreateClient()
-	sut := NewFindings(client)
+	sut := NewFindingsClient(client)
 
 	result := sut.Get(63)
 

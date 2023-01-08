@@ -3,14 +3,14 @@ package DefectDojoApi
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/jamuriano/go-defectdojo/pkg/Client"
+	"github.com/freepik-company/go-defectdojo/pkg/Client"
 )
 
 type FindingsClient struct {
 	client Client.Client
 }
 
-func NewFindings(client Client.Client) *FindingsClient {
+func NewFindingsClient(client Client.Client) *FindingsClient {
 	return &FindingsClient{client: client}
 }
 
@@ -47,4 +47,8 @@ func (this FindingsClient) Update(finding Finding) *Finding {
 	response := this.client.Put(fmt.Sprintf("/api/v2/findings/%d/", finding.Id), string(body))
 
 	return this.unmarshalFinding(response)
+}
+
+func (this FindingsClient) Delete(finding Finding) {
+	this.client.Delete(fmt.Sprintf("/api/v2/findings/%d/", finding.Id))
 }
