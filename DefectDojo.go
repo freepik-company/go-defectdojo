@@ -1,4 +1,4 @@
-package cmd
+package go_defectdojo
 
 import (
 	"github.com/freepik-company/go-defectdojo/pkg/Client"
@@ -9,6 +9,7 @@ type DefectDojo struct {
 	client      Client.Client
 	engagements *DefectDojoApi.EngagementsClient
 	findings    *DefectDojoApi.FindingsClient
+	product     *DefectDojoApi.ProductsClient
 	tests       *DefectDojoApi.TestsClient
 }
 
@@ -37,4 +38,12 @@ func (this DefectDojo) Tests() *DefectDojoApi.TestsClient {
 	}
 
 	return this.tests
+}
+
+func (this DefectDojo) Products() *DefectDojoApi.ProductsClient {
+	if this.product == nil {
+		this.product = DefectDojoApi.NewProductsClient(this.client)
+	}
+
+	return this.product
 }
